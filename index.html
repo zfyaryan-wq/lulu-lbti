@@ -515,6 +515,67 @@
       object-fit: cover;
     }
 
+    .thinking-card {
+      justify-self: start;
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+      align-items: center;
+      max-width: min(84%, 560px);
+      padding: 12px;
+      border-radius: 20px;
+      background: #fff;
+      border-bottom-left-radius: 6px;
+      box-shadow: 0 12px 26px rgba(99, 60, 32, 0.1);
+    }
+
+    .thinking-card img {
+      width: 86px;
+      height: 86px;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
+    .thinking-text {
+      color: var(--brand-dark);
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .thinking-dots {
+      display: inline-flex;
+      gap: 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .thinking-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      animation: bounce 0.8s infinite ease-in-out;
+    }
+
+    .thinking-dots span:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .thinking-dots span:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: translateY(0);
+        opacity: 0.45;
+      }
+      40% {
+        transform: translateY(-7px);
+        opacity: 1;
+      }
+    }
+
     .chat-form {
       display: grid;
       grid-template-columns: 1fr auto auto;
@@ -563,6 +624,14 @@
       accent-color: var(--brand);
     }
 
+    .gif-gallery {
+      display: none;
+    }
+
+    .gif-gallery.show {
+      display: block;
+    }
+
     .gif-gallery h2 {
       margin: 0 0 10px;
       font-size: 26px;
@@ -575,12 +644,11 @@
     }
 
     .gif-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+      display: block;
     }
 
     .gif-card {
+      max-width: 320px;
       overflow: hidden;
       border-radius: 18px;
       background: #fffaf2;
@@ -739,6 +807,15 @@
         grid-template-columns: 1fr;
       }
 
+      .thinking-card {
+        grid-template-columns: 70px 1fr;
+      }
+
+      .thinking-card img {
+        width: 70px;
+        height: 70px;
+      }
+
       .whisper {
         left: 156px;
         top: -4px;
@@ -762,10 +839,6 @@
 
       .result-meta {
         grid-template-columns: 1fr;
-      }
-
-      .gif-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .share {
@@ -798,10 +871,6 @@
 
       label {
         font-size: 14px;
-      }
-
-      .gif-grid {
-        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -1102,6 +1171,12 @@
       memeCaption.textContent = meme.caption;
     }
 
+    function showResultGif(seed) {
+      const gif = pickGif(`${seed}-${Date.now()}-${Math.random()}`);
+      gifGrid.innerHTML = `<figure class="gif-card"><img src="${gif.src}" alt="${gif.title}" loading="lazy" decoding="async"><span>${gif.title}：今日噜噜随机掉落</span></figure>`;
+      document.querySelector(".gif-gallery").classList.add("show");
+    }
+
     function buildResult(code) {
       if (specialResults[code]) return specialResults[code];
 
@@ -1127,6 +1202,7 @@
         return `<div class="meta-card"><strong>${titles[index] || "补充观察"}</strong><span>${detail}</span></div>`;
       }).join("");
       showMeme(pickMeme(code), code);
+      showResultGif(code);
       shareText.textContent = `我的 LBTI 是 ${code}：${data.name}。今天是人类 MBTI 史上伟大的一天。`;
       result.classList.add("show");
       result.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1168,12 +1244,9 @@
 
     resetBtn.addEventListener("click", () => {
       result.classList.remove("show");
+      document.querySelector(".gif-gallery").classList.remove("show");
       toast.classList.remove("show");
     });
-
-    gifGrid.innerHTML = luluGifs.map((gif) => (
-      `<figure class="gif-card"><img src="${gif.src}" alt="${gif.title}" loading="lazy" decoding="async"><span>${gif.title}</span></figure>`
-    )).join("");
 
     function addChatMessage(role, text) {
       const item = document.createElement("div");
@@ -1190,6 +1263,22 @@
       wrap.innerHTML = `<img src="${gif.src}" alt="${gif.title}" loading="lazy" decoding="async">`;
       chatLog.appendChild(wrap);
       chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function addThinkingCard(seed) {
+      const gif = pickGif(seed);
+      const card = document.createElement("div");
+      card.className = "thinking-card";
+      card.innerHTML = `
+        <img src="${gif.src}" alt="噜噜思考中" loading="lazy" decoding="async">
+        <div class="thinking-text">
+          噜噜正在细思鼻孔
+          <span class="thinking-dots"><span></span><span></span><span></span></span>
+        </div>
+      `;
+      chatLog.appendChild(card);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      return card;
     }
 
     async function speakAsLulu(text) {
@@ -1220,6 +1309,7 @@
       addChatMessage("user", userText);
       chatHistory.push({ role: "user", content: userText });
       chatStatus.textContent = "API：噜噜思考中";
+      const thinkingCard = addThinkingCard(userText);
 
       try {
         const response = await fetch(`${API_BASE}/api/chat`, {
@@ -1237,12 +1327,14 @@
         }
         const data = await response.json();
         const reply = data.reply || "噜噜卡住了，但它依然觉得这很像鼻孔。";
+        thinkingCard.remove();
         addChatMessage("lulu", reply);
         addChatGif(`${reply}-${Date.now()}`);
         chatHistory.push({ role: "assistant", content: reply });
         chatStatus.textContent = "API：已连接";
         await speakAsLulu(reply);
       } catch (error) {
+        thinkingCard.remove();
         addChatMessage("system", `噜噜 API 出错：${error.message}。如果是 Failed to fetch，多半是当前网络连不上 workers.dev。`);
         chatStatus.textContent = "API：连接失败";
       } finally {
