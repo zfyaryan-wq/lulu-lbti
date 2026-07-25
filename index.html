@@ -1231,7 +1231,10 @@
             page: "水豚噜噜 LBTI 人格测试"
           })
         });
-        if (!response.ok) throw new Error(`Chat ${response.status}`);
+        if (!response.ok) {
+          const detail = await response.json().catch(() => ({}));
+          throw new Error(detail.detail || detail.error || `Chat ${response.status}`);
+        }
         const data = await response.json();
         const reply = data.reply || "噜噜卡住了，但它依然觉得这很像鼻孔。";
         addChatMessage("lulu", reply);
@@ -1240,7 +1243,7 @@
         chatStatus.textContent = "API：已连接";
         await speakAsLulu(reply);
       } catch (error) {
-        addChatMessage("system", "噜噜 API 还没连上。确认 Cloudflare Worker 已部署，并且 SILICONFLOW_API_KEY 已设置为 Secret。");
+        addChatMessage("system", `噜噜 API 出错：${error.message}。如果是 Failed to fetch，多半是当前网络连不上 workers.dev。`);
         chatStatus.textContent = "API：连接失败";
       } finally {
         isSending = false;
