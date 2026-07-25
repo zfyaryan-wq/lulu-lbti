@@ -308,6 +308,50 @@
       line-height: 1.8;
     }
 
+    .result-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .meta-card {
+      min-height: 112px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 250, 242, 0.76);
+      border: 1px solid rgba(155, 85, 41, 0.12);
+    }
+
+    .meta-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--brand-dark);
+      font-size: 15px;
+    }
+
+    .meta-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--brand-dark);
+      background: rgba(215, 130, 74, 0.12);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
     .share {
       margin-top: 18px;
       padding: 16px;
@@ -480,6 +524,10 @@
         line-height: 1.7;
       }
 
+      .result-meta {
+        grid-template-columns: 1fr;
+      }
+
       .share {
         font-size: 14px;
         line-height: 1.55;
@@ -520,7 +568,7 @@
       <span class="badge">人类 MBTI 史上伟大的一天</span>
       <h1>水豚噜噜<br />LBTI 人格测试</h1>
       <p class="subtitle">
-        你是细思鼻孔的开宗立派型，还是看到噜噜就爱鼠了的精神饲养员？
+        你是 XXBK 细寻鼻孔，还是 YZLB 硬找噜鼻？
         8 道题，测出你的噜噜人格。
       </p>
 
@@ -540,64 +588,64 @@
       <div class="question">
         <h2>1. 看到一只小噜噜，你第一反应是？</h2>
         <div class="options">
-          <label><input type="radio" name="q1" value="Y" /> 爱鼠了，立刻认领精神抚养权</label>
-          <label><input type="radio" name="q1" value="X" /> 先仔细观察，确认它到底哪里可爱</label>
+          <label><input type="radio" name="q1" value="Y" /> 硬说可爱，先认领精神抚养权</label>
+          <label><input type="radio" name="q1" value="X" /> 细看两秒，确认它到底哪里可爱</label>
         </div>
       </div>
 
       <div class="question">
         <h2>2. 朋友说“我还有一只噜噜”，你会？</h2>
         <div class="options">
-          <label><input type="radio" name="q2" value="Y" /> 真有啊？我去，给我看！</label>
-          <label><input type="radio" name="q2" value="X" /> 你养的吗？领养的吗？来源清楚吗？</label>
+          <label><input type="radio" name="q2" value="Y" /> 真有啊？我去，必须硬看！</label>
+          <label><input type="radio" name="q2" value="X" /> 发来，我要细节图和正脸图</label>
         </div>
       </div>
 
       <div class="question">
         <h2>3. 面对“捏他鼻子”这个请求，你会？</h2>
         <div class="options">
-          <label><input type="radio" name="q3" value="X" /> 替我，立刻精神捏鼻</label>
-          <label><input type="radio" name="q3" value="Z" /> 人家哪儿有鼻子？</label>
+          <label><input type="radio" name="q3" value="S" /> 先思考：人家哪儿有鼻子？</label>
+          <label><input type="radio" name="q3" value="Z" /> 别管，先找，替我捏一下</label>
         </div>
       </div>
 
       <div class="question">
         <h2>4. 当大家开始硬找噜鼻时，你的态度是？</h2>
         <div class="options">
-          <label><input type="radio" name="q4" value="X" /> 仔细看，细思鼻孔</label>
-          <label><input type="radio" name="q4" value="Z" /> 那是鼻孔吗？我不行了</label>
+          <label><input type="radio" name="q4" value="X" /> 细寻鼻孔，逐帧找证据</label>
+          <label><input type="radio" name="q4" value="Z" /> 硬找噜鼻，找不到也要找</label>
         </div>
       </div>
 
       <div class="question">
         <h2>5. 你遇到萌物时的语言状态是？</h2>
         <div class="options">
-          <label><input type="radio" name="q5" value="B" /> 爱鼠了这小噜噜，谁懂</label>
-          <label><input type="radio" name="q5" value="L" /> 好可爱，但我还能维持人类语言</label>
+          <label><input type="radio" name="q5" value="L" /> 爱鼠了这小噜噜，谁懂</label>
+          <label><input type="radio" name="q5" value="B" /> 等等，我先看它鼻部结构</label>
         </div>
       </div>
 
       <div class="question">
         <h2>6. 朋友发来噜噜照片，你会？</h2>
         <div class="options">
-          <label><input type="radio" name="q6" value="B" /> 我不行了</label>
-          <label><input type="radio" name="q6" value="L" /> 不错，确实有点可爱</label>
+          <label><input type="radio" name="q6" value="L" /> 我不行了，小噜噜本体太强</label>
+          <label><input type="radio" name="q6" value="B" /> 那是鼻孔吗？鼻毛多么带孔</label>
         </div>
       </div>
 
       <div class="question">
         <h2>7. 出现“细思鼻孔”这种词时，你会？</h2>
         <div class="options">
-          <label><input type="radio" name="q7" value="K" /> 立刻缩写成 XXBK，并宣布 LBTI 成立</label>
-          <label><input type="radio" name="q7" value="R" /> 笑一下，转发，但不负责建系</label>
+          <label><input type="radio" name="q7" value="K" /> 立刻缩写成 XSBK，重点是孔</label>
+          <label><input type="radio" name="q7" value="B" /> 我宣布这是噜鼻，不接受反驳</label>
         </div>
       </div>
 
       <div class="question">
         <h2>8. 你会把自己的 MBTI 改成？</h2>
         <div class="options">
-          <label><input type="radio" name="q8" value="K" /> XXBK / YZLB / LBTI，必须填</label>
-          <label><input type="radio" name="q8" value="R" /> 不改，但会问别人“你的 LBTI 是什么”</label>
+          <label><input type="radio" name="q8" value="K" /> XXBK / XSBK，孔学必须有姓名</label>
+          <label><input type="radio" name="q8" value="B" /> YZLB，硬找噜鼻才是归宿</label>
         </div>
       </div>
 
@@ -611,8 +659,10 @@
 
     <section class="result" id="result" aria-live="polite">
       <h2 class="type" id="typeCode">XXBK</h2>
-      <h3 id="typeName">细寻鼻孔・崩溃开宗型</h3>
+      <h3 id="typeName">细寻鼻孔型</h3>
       <p id="typeDesc"></p>
+      <div class="chips" id="typeChips"></div>
+      <div class="result-meta" id="typeMeta"></div>
       <div class="share" id="shareText"></div>
     </section>
   </main>
@@ -623,44 +673,77 @@
     const typeCode = document.querySelector("#typeCode");
     const typeName = document.querySelector("#typeName");
     const typeDesc = document.querySelector("#typeDesc");
+    const typeChips = document.querySelector("#typeChips");
+    const typeMeta = document.querySelector("#typeMeta");
     const shareText = document.querySelector("#shareText");
     const toast = document.querySelector("#toast");
     const randomBtn = document.querySelector("#randomBtn");
     const resetBtn = document.querySelector("#resetBtn");
 
     const dimensions = [
-      ["Y", "X"],
-      ["X", "Z"],
+      ["X", "Y"],
+      ["X", "S", "Z"],
       ["B", "L"],
-      ["K", "R"]
+      ["K", "B"]
     ];
 
-    const names = {
-      Y: "养噜",
-      X: "细寻",
-      Z: "止损",
-      B: "崩溃",
-      L: "冷静",
-      K: "开宗",
-      R: "路过"
-    };
+    const positionNames = [
+      { X: "细", Y: "硬" },
+      { X: "寻", S: "思", Z: "找" },
+      { B: "鼻", L: "噜" },
+      { K: "孔", B: "鼻" }
+    ];
+
+    const axisDetails = [
+      {
+        X: "细看派：先放大、再截图、最后进入显微镜级别的噜噜观察。",
+        Y: "硬找派：先宣布有，再发动全群一起找，气势比证据更早抵达。"
+      },
+      {
+        X: "寻迹型：擅长从阴影、褶皱和表情里寻找噜学证据。",
+        S: "思辨型：会认真问“那是鼻孔吗”，但越问越觉得有道理。",
+        Z: "找补型：即使一开始看不见，也能用十种角度把噜鼻找出来。"
+      },
+      {
+        B: "鼻部本位：你关注的是孔、毛、鼻梁和一切疑似鼻的地方。",
+        L: "噜噜本位：你关注的是整只小噜噜，以及它造成的人类语言系统崩塌。"
+      },
+      {
+        K: "孔学落点：结论最终落在“孔”上，追求一种细思极恐的精确。",
+        B: "噜鼻落点：结论最终落在“鼻”上，重点不是孔不孔，是必须有个鼻。"
+      }
+    ];
 
     const specialResults = {
       XXBK: {
-        name: "细寻鼻孔・崩溃开宗型",
-        desc: "你是噜噜学奠基人。别人看到水豚，你看到鼻孔、鼻毛和多么带孔。你不是在看萌物，你是在建立一套新的人格分类宇宙。"
+        name: "细寻鼻孔型",
+        desc: "你是经典噜学显微镜。别人看到水豚，你看到鼻孔；别人说“哪儿有鼻子”，你已经开始调亮度、放大、截图、圈重点。",
+        tags: ["细思鼻孔", "截图派", "噜学考据"],
+        details: ["观察力像开了微距镜头，越小的细节越能让你兴奋。", "群聊里你通常负责提供证据链：原图、放大图、二次放大图。", "建议把结论发慢一点，不然朋友还没看懂，你已经进入 XXBK 论文答辩。"]
       },
       YZLB: {
-        name: "养噜止损・冷静崩溃边缘型",
-        desc: "你嘴上说“哪儿有鼻子”，但心里已经开始替人捏鼻子。你是理性与爱鼠之间反复横跳的经典噜噜人格。"
+        name: "硬找噜鼻型",
+        desc: "你是气势型噜噜学家。证据可以稍后补，态度必须先到位。只要有人说“仔细看”，你就会立刻加入硬找噜鼻大队。",
+        tags: ["硬找噜鼻", "先信再说", "群聊起哄王"],
+        details: ["你的可爱雷达启动很快，常常先被噜噜击中，再回头寻找理论依据。", "你适合负责把冷场话题炒热，一句“真有啊”就能让全场开始放大图片。", "建议保留一点刹车系统，避免把普通阴影也认证成国家级噜鼻。"]
       },
       YXBK: {
-        name: "养噜细思・崩溃开宗型",
-        desc: "你一旦确认“真有啊”，就会迅速进入领养、捏鼻、造梗、卖测试一块钱的全流程创业状态。"
+        name: "硬寻鼻孔型",
+        desc: "你表面是硬找派，内心却有一套严谨检索流程。你会先大喊“我去真有”，然后开始认真定位鼻孔坐标。",
+        tags: ["先冲后证", "鼻孔定位员", "精神捏鼻"],
+        details: ["你既有起哄的热情，也有考据的耐心，是群聊里很稀缺的复合型噜才。", "你容易把一句玩笑发展成完整项目：命名、分类、测试、传播，一条龙。", "建议给每个重大发现留一个版本号，比如 YXBK v2.0。"]
       },
-      XZLR: {
-        name: "寻噜止损・冷静路过型",
-        desc: "你负责在人群疯掉时问：“等一下，那真的是鼻孔吗？”你是噜噜宇宙里最后的人类理智。"
+      XSBK: {
+        name: "细思鼻孔型",
+        desc: "你是原教旨细思鼻孔派。你不会轻易下结论，但一旦开始想，就会从“那是鼻孔吗”想到“鼻毛多么带孔”。",
+        tags: ["细思鼻孔", "理性崩溃", "鼻孔哲学"],
+        details: ["你擅长把荒谬问题认真化，并在认真到一半时把自己逗崩。", "朋友发图时，你往往不是第一个笑的人，但会是把梗续到最后的人。", "建议把你的分析做成系列栏目：今日噜鼻、每周鼻孔、年度细思。"]
+      },
+      XZLB: {
+        name: "细找噜鼻型",
+        desc: "你是冷静但不放弃的找鼻派。你不会大喊大叫，却会默默把图片放大三次，直到找到一个能被称作“噜鼻”的东西。",
+        tags: ["安静找鼻", "冷面笑匠", "细节执念"],
+        details: ["你的幽默点比较后发，通常在别人笑完后，你突然补一句更离谱的。", "你适合做测试里的隐藏高分选手，不声张，但判断很准。", "建议多发一点你的观察过程，群众需要你的显微镜。"]
       }
     };
 
@@ -669,19 +752,33 @@
       return checked ? checked.value : "";
     }
 
-    function pickDimension(left, right, answers) {
-      const leftCount = answers.filter((answer) => answer === left).length;
-      const rightCount = answers.filter((answer) => answer === right).length;
-      return leftCount >= rightCount ? left : right;
+    function pickDimension(options, answers) {
+      const scores = options.map((option) => ({
+        option,
+        score: answers.filter((answer) => answer === option).length
+      }));
+      scores.sort((a, b) => b.score - a.score);
+      return scores[0].option;
+    }
+
+    function getPhrase(code) {
+      return code.split("").map((letter, index) => positionNames[index][letter]).join("");
+    }
+
+    function getGenericDetails(code) {
+      return code.split("").map((letter, index) => axisDetails[index][letter]);
     }
 
     function buildResult(code) {
       if (specialResults[code]) return specialResults[code];
 
-      const displayName = `${names[code[0]]}${names[code[1]]}・${names[code[2]]}${names[code[3]]}型`;
-      const desc = `你的噜噜人格是 ${displayName}。你对小噜噜既有本能的爱，也有独特的观察角度；一旦进入“细思鼻孔”现场，很可能成为朋友群里那个把梗续到第二天的人。`;
+      const phrase = getPhrase(code);
+      const displayName = `${phrase}型`;
+      const desc = `你的噜噜人格是 ${displayName}。这个结果严格按拼音首字母生成：${code.split("").join(" ")} 对应 ${phrase.split("").join(" ")}。你对小噜噜既有本能的爱，也有独特的观察角度；一旦进入“细思鼻孔”现场，很可能成为朋友群里那个把梗续到第二天的人。`;
+      const tags = [`${phrase}`, "噜噜人格", "可爱失控"];
+      const details = getGenericDetails(code);
 
-      return { name: displayName, desc };
+      return { name: displayName, desc, tags, details };
     }
 
     function showResult(code) {
@@ -689,6 +786,11 @@
       typeCode.textContent = code;
       typeName.textContent = data.name;
       typeDesc.textContent = data.desc;
+      typeChips.innerHTML = (data.tags || []).map((tag) => `<span class="chip">${tag}</span>`).join("");
+      typeMeta.innerHTML = (data.details || getGenericDetails(code)).map((detail, index) => {
+        const titles = ["人格底色", "群聊表现", "噜学建议"];
+        return `<div class="meta-card"><strong>${titles[index] || "补充观察"}</strong><span>${detail}</span></div>`;
+      }).join("");
       shareText.textContent = `我的 LBTI 是 ${code}：${data.name}。今天是人类 MBTI 史上伟大的一天。`;
       result.classList.add("show");
       result.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -703,10 +805,10 @@
 
       toast.classList.remove("show");
       const code = [
-        pickDimension("Y", "X", answers.slice(0, 2)),
-        pickDimension("X", "Z", answers.slice(2, 4)),
-        pickDimension("B", "L", answers.slice(4, 6)),
-        pickDimension("K", "R", answers.slice(6, 8))
+        pickDimension(dimensions[0], answers.slice(0, 2)),
+        pickDimension(dimensions[1], answers.slice(2, 4)),
+        pickDimension(dimensions[2], answers.slice(4, 6)),
+        pickDimension(dimensions[3], answers.slice(6, 8))
       ].join("");
 
       showResult(code);
@@ -730,3 +832,4 @@
   </script>
 </body>
 </html>
+
