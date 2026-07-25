@@ -370,6 +370,24 @@
       opacity: 0.82;
     }
 
+    .meme-image-wrap {
+      overflow: hidden;
+      margin: 8px 0 14px;
+      border: 4px solid rgba(255, 248, 238, 0.76);
+      border-radius: 20px;
+      background: rgba(255, 248, 238, 0.18);
+      aspect-ratio: 1 / 1;
+      max-width: 240px;
+      box-shadow: 0 14px 28px rgba(70, 35, 18, 0.2);
+    }
+
+    .meme-image-wrap img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .meme-phrase {
       margin: 0;
       font-size: clamp(30px, 7vw, 56px);
@@ -716,6 +734,9 @@
       <div class="result-meta" id="typeMeta"></div>
       <div class="meme-board" id="memeBoard">
         <p class="meme-kicker">今日噜噜表情包</p>
+        <div class="meme-image-wrap">
+          <img id="memeImage" src="./memes/meme-wkkx.png" alt="噜噜表情包" loading="lazy">
+        </div>
         <h4 class="meme-phrase" id="memePhrase">无孔可寻</h4>
         <span class="meme-code" id="memeCode">WKKX</span>
         <p class="meme-caption" id="memeCaption"></p>
@@ -733,6 +754,7 @@
     const typeDesc = document.querySelector("#typeDesc");
     const typeChips = document.querySelector("#typeChips");
     const typeMeta = document.querySelector("#typeMeta");
+    const memeImage = document.querySelector("#memeImage");
     const memePhrase = document.querySelector("#memePhrase");
     const memeCode = document.querySelector("#memeCode");
     const memeCaption = document.querySelector("#memeCaption");
@@ -810,17 +832,17 @@
     };
 
     const luluMemes = [
-      { code: "WKKX", phrase: "无孔可寻", caption: "放大三次，沉默十秒：这次真的没有孔，只有无边无际的噜。" },
-      { code: "WZSB", phrase: "无中生鼻", caption: "本来什么都没有，但群聊说有，于是它逐渐拥有了鼻。" },
-      { code: "CCSK", phrase: "处处是孔", caption: "进入孔学后遗症：看水豚像看星图，每个暗点都有重大嫌疑。" },
-      { code: "SB", phrase: "生鼻", caption: "从无到有，从嘴到鼻，一切都发生在你决定相信的那一刻。" },
-      { code: "YKKL", phrase: "以孔窥噜", caption: "你不是在看鼻孔，你是在通过鼻孔理解整只噜噜的精神宇宙。" },
-      { code: "NSZ", phrase: "那是嘴", caption: "理智派最后的防线：先别急着捏，那可能只是嘴。" },
-      { code: "ZZWB", phrase: "指嘴为鼻", caption: "当群聊进入高潮，嘴已经不再只是嘴，它承担了鼻的历史使命。" },
-      { code: "LHYZ", phrase: "噜何有嘴", caption: "经典反问：如果那是嘴，那么噜噜为什么看起来这么像没嘴？" },
-      { code: "SZYY", phrase: "甚至有牙", caption: "鼻孔还没讨论完，牙又出现了。噜噜学，从不缺少新战场。" },
-      { code: "NSKZ", phrase: "那是口罩", caption: "终极止损：不要再争了，那可能是一只戴着隐形口罩的噜噜。" },
-      { code: "WBXL", phrase: "我不行了", caption: "语言系统宣告下线，只剩下一句人类共同的噜噜遗言。" }
+      { code: "WKKX", phrase: "无孔可寻", image: "./memes/meme-wkkx.png", caption: "放大三次，沉默十秒：这次真的没有孔，只有无边无际的噜。" },
+      { code: "WZSB", phrase: "无中生鼻", image: "./memes/meme-yzlb.png", caption: "本来什么都没有，但群聊说有，于是它逐渐拥有了鼻。" },
+      { code: "CCSK", phrase: "处处是孔", image: "./memes/meme-yzlb.png", caption: "进入孔学后遗症：看水豚像看星图，每个暗点都有重大嫌疑。" },
+      { code: "SB", phrase: "生鼻", image: "./memes/meme-zzwb.png", caption: "从无到有，从嘴到鼻，一切都发生在你决定相信的那一刻。" },
+      { code: "YKKL", phrase: "以孔窥噜", image: "./memes/meme-xsbk.png", caption: "你不是在看鼻孔，你是在通过鼻孔理解整只噜噜的精神宇宙。" },
+      { code: "NSZ", phrase: "那是嘴", image: "./memes/meme-zzwb.png", caption: "理智派最后的防线：先别急着捏，那可能只是嘴。" },
+      { code: "ZZWB", phrase: "指嘴为鼻", image: "./memes/meme-zzwb.png", caption: "当群聊进入高潮，嘴已经不再只是嘴，它承担了鼻的历史使命。" },
+      { code: "LHYZ", phrase: "噜何有嘴", image: "./memes/meme-lhyz.png", caption: "经典反问：如果那是嘴，那么噜噜为什么看起来这么像没嘴？" },
+      { code: "SZYY", phrase: "甚至有牙", image: "./memes/meme-szyy.png", caption: "鼻孔还没讨论完，牙又出现了。噜噜学，从不缺少新战场。" },
+      { code: "NSKZ", phrase: "那是口罩", image: "./memes/meme-lhyz.png", caption: "终极止损：不要再争了，那可能是一只戴着隐形口罩的噜噜。" },
+      { code: "WBXL", phrase: "我不行了", image: "./memes/meme-wbxl.png", caption: "语言系统宣告下线，只剩下一句人类共同的噜噜遗言。" }
     ];
 
     function getCheckedValue(name) {
@@ -851,6 +873,8 @@
     }
 
     function showMeme(meme) {
+      memeImage.src = meme.image;
+      memeImage.alt = `${meme.phrase}噜噜表情包`;
       memePhrase.textContent = meme.phrase;
       memeCode.textContent = meme.code;
       memeCaption.textContent = meme.caption;
