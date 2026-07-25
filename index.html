@@ -443,6 +443,109 @@
       display: block;
     }
 
+    .chat-panel h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .chat-panel > p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .chat-log {
+      display: grid;
+      gap: 12px;
+      max-height: 360px;
+      overflow: auto;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 250, 242, 0.75);
+      border: 1px solid rgba(155, 85, 41, 0.12);
+    }
+
+    .chat-message {
+      width: fit-content;
+      max-width: min(78%, 620px);
+      padding: 12px 14px;
+      border-radius: 18px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      box-shadow: 0 8px 18px rgba(99, 60, 32, 0.08);
+    }
+
+    .chat-message.user {
+      justify-self: end;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--pink));
+      border-bottom-right-radius: 6px;
+    }
+
+    .chat-message.lulu {
+      justify-self: start;
+      color: var(--text);
+      background: #fff;
+      border-bottom-left-radius: 6px;
+    }
+
+    .chat-message.system {
+      justify-self: center;
+      max-width: 100%;
+      color: var(--brand-dark);
+      background: rgba(215, 130, 74, 0.12);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .chat-form {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chat-form input {
+      min-height: 52px;
+      padding: 0 16px;
+      border: 2px solid rgba(155, 85, 41, 0.14);
+      border-radius: 999px;
+      background: #fffaf2;
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+
+    .chat-form input:focus {
+      border-color: rgba(215, 130, 74, 0.72);
+    }
+
+    .chat-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .chat-options label {
+      display: inline-flex;
+      min-height: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .chat-options input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--brand);
+    }
+
     .gif-gallery h2 {
       margin: 0 0 10px;
       font-size: 26px;
@@ -615,6 +718,10 @@
         font-size: 15px;
       }
 
+      .chat-form {
+        grid-template-columns: 1fr;
+      }
+
       .whisper {
         left: 156px;
         top: -4px;
@@ -701,6 +808,23 @@
         <div class="nose-hole left"></div>
         <div class="nose-hole right"></div>
         <div class="whisper">细思鼻孔</div>
+      </div>
+    </section>
+
+    <section class="panel chat-panel">
+      <h2>和噜噜对话</h2>
+      <p>把你的测试结果、吐槽和“这到底是不是鼻孔”发给噜噜。接好 Worker 后，噜噜会用 AI 回你，还能用语音念出来。</p>
+      <div class="chat-log" id="chatLog">
+        <div class="chat-message system">噜噜还在等 API Worker。部署后就可以开始吐槽。</div>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <input id="chatInput" type="text" autocomplete="off" placeholder="问噜噜：这到底是鼻孔还是嘴？" />
+        <button type="button" class="ghost" id="voiceBtn">按住说话</button>
+        <button type="submit">发送给噜噜</button>
+      </form>
+      <div class="chat-options">
+        <label><input type="checkbox" id="autoSpeak" checked /> 自动播放噜噜语音</label>
+        <span id="chatStatus">API：等待连接</span>
       </div>
     </section>
 
@@ -821,6 +945,18 @@
     const toast = document.querySelector("#toast");
     const randomBtn = document.querySelector("#randomBtn");
     const resetBtn = document.querySelector("#resetBtn");
+    const chatLog = document.querySelector("#chatLog");
+    const chatForm = document.querySelector("#chatForm");
+    const chatInput = document.querySelector("#chatInput");
+    const voiceBtn = document.querySelector("#voiceBtn");
+    const autoSpeak = document.querySelector("#autoSpeak");
+    const chatStatus = document.querySelector("#chatStatus");
+
+    const API_BASE = (window.LULU_API_BASE || localStorage.getItem("luluApiBase") || "https://lulu-api.zfyaryan.workers.dev").replace(/\/$/, "");
+    const chatHistory = [];
+    let currentTypeCode = "";
+    let currentTypeName = "";
+    let isSending = false;
 
     const dimensions = [
       ["X", "Y"],
@@ -960,6 +1096,8 @@
       typeCode.textContent = code;
       typeName.textContent = data.name;
       typeDesc.textContent = data.desc;
+      currentTypeCode = code;
+      currentTypeName = data.name;
       typeChips.innerHTML = (data.tags || []).map((tag) => `<span class="chip">${tag}</span>`).join("");
       typeMeta.innerHTML = (data.details || getGenericDetails(code)).map((detail, index) => {
         const titles = ["人格底色", "群聊表现", "噜学建议"];
@@ -1013,6 +1151,96 @@
     gifGrid.innerHTML = luluGifs.map((gif) => (
       `<figure class="gif-card"><img src="${gif.src}" alt="${gif.title}" loading="lazy" decoding="async"><span>${gif.title}</span></figure>`
     )).join("");
+
+    function addChatMessage(role, text) {
+      const item = document.createElement("div");
+      item.className = `chat-message ${role}`;
+      item.textContent = text;
+      chatLog.appendChild(item);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    async function speakAsLulu(text) {
+      if (!autoSpeak.checked) return;
+      try {
+        chatStatus.textContent = "API：噜噜正在开嗓";
+        const response = await fetch(`${API_BASE}/api/tts`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+        if (!response.ok) throw new Error(`TTS ${response.status}`);
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audio.onended = () => URL.revokeObjectURL(url);
+        await audio.play();
+      } catch (error) {
+        chatStatus.textContent = "API：语音失败，先看文字";
+      }
+    }
+
+    async function sendToLulu(text) {
+      if (isSending || !text.trim()) return;
+      isSending = true;
+      const userText = text.trim();
+      chatInput.value = "";
+      addChatMessage("user", userText);
+      chatHistory.push({ role: "user", content: userText });
+      chatStatus.textContent = "API：噜噜思考中";
+
+      try {
+        const response = await fetch(`${API_BASE}/api/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: chatHistory.slice(-10),
+            result: currentTypeCode ? `${currentTypeCode} ${currentTypeName}` : "",
+            page: "水豚噜噜 LBTI 人格测试"
+          })
+        });
+        if (!response.ok) throw new Error(`Chat ${response.status}`);
+        const data = await response.json();
+        const reply = data.reply || "噜噜卡住了，但它依然觉得这很像鼻孔。";
+        addChatMessage("lulu", reply);
+        chatHistory.push({ role: "assistant", content: reply });
+        chatStatus.textContent = "API：已连接";
+        await speakAsLulu(reply);
+      } catch (error) {
+        addChatMessage("system", "噜噜 API 还没连上。确认 Cloudflare Worker 已部署，并且 SILICONFLOW_API_KEY 已设置为 Secret。");
+        chatStatus.textContent = "API：连接失败";
+      } finally {
+        isSending = false;
+      }
+    }
+
+    chatForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      sendToLulu(chatInput.value);
+    });
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "zh-CN";
+      recognition.interimResults = false;
+      recognition.continuous = false;
+      voiceBtn.addEventListener("click", () => {
+        chatStatus.textContent = "API：正在听你吐槽";
+        recognition.start();
+      });
+      recognition.addEventListener("result", (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+        sendToLulu(transcript);
+      });
+      recognition.addEventListener("error", () => {
+        chatStatus.textContent = "API：浏览器语音识别失败";
+      });
+    } else {
+      voiceBtn.disabled = true;
+      voiceBtn.textContent = "不支持语音";
+    }
   </script>
 </body>
 </html>
