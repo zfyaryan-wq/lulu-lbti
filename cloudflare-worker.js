@@ -6,6 +6,21 @@ const CORS_HEADERS = {
 
 const CHAT_MODEL = "deepseek-ai/DeepSeek-V4-Flash";
 const TTS_MODEL = "FunAudioLLM/CosyVoice2-0.5B";
+const STATIC_BASE = "https://raw.githubusercontent.com/zfyaryan-wq/lulu-lbti/main";
+
+const MIME_TYPES = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".mp3": "audio/mpeg"
+};
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -22,6 +37,53 @@ function getApiKey(env) {
     throw new Error("Missing SILICONFLOW_API_KEY");
   }
   return env.SILICONFLOW_API_KEY;
+}
+
+function getMime(pathname) {
+  const lower = pathname.toLowerCase();
+  const ext = Object.keys(MIME_TYPES).find((item) => lower.endsWith(item));
+  return ext ? MIME_TYPES[ext] : "application/octet-stream";
+}
+
+function getStaticPath(url) {
+  let pathname = decodeURIComponent(url.pathname);
+  if (pathname === "/") return "/index.html";
+  if (pathname.endsWith("/")) return `${pathname}index.html`;
+  if (pathname.includes("..")) return "/index.html";
+  return pathname;
+}
+
+async function handleStatic(request) {
+  const url = new URL(request.url);
+  const pathname = getStaticPath(url);
+  const upstream = await fetch(`${STATIC_BASE}${pathname}`, {
+    headers: {
+      "User-Agent": "lulu-lbti-worker"
+    }
+  });
+
+  if (!upstream.ok) {
+    const index = await fetch(`${STATIC_BASE}/index.html`, {
+      headers: {
+        "User-Agent": "lulu-lbti-worker"
+      }
+    });
+    return new Response(index.body, {
+      status: index.ok ? 200 : 404,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=120"
+      }
+    });
+  }
+
+  return new Response(upstream.body, {
+    status: 200,
+    headers: {
+      "Content-Type": getMime(pathname),
+      "Cache-Control": pathname === "/index.html" ? "public, max-age=60" : "public, max-age=86400"
+    }
+  });
 }
 
 function trimMessages(messages) {
@@ -138,6 +200,17 @@ export default {
       }
       if (request.method === "POST" && url.pathname === "/api/tts") {
         return handleTts(request, env);
+      }
+      if (request.method === "GET" && url.pathname === "/api/health") {
+        return json({
+          ok: true,
+          service: "lulu-ai-worker",
+          hasKey: Boolean(env.SILICONFLOW_API_KEY),
+          static: "github-raw"
+        });
+      }
+      if (request.method === "GET") {
+        return handleStatic(request);
       }
       return json({ ok: true, service: "lulu-ai-worker" });
     } catch (error) {
