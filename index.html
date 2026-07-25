@@ -498,6 +498,23 @@
       text-align: center;
     }
 
+    .chat-gif {
+      justify-self: start;
+      width: min(180px, 52vw);
+      overflow: hidden;
+      border: 4px solid #fff;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(99, 60, 32, 0.14);
+    }
+
+    .chat-gif img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
     .chat-form {
       display: grid;
       grid-template-columns: 1fr auto auto;
@@ -1071,8 +1088,14 @@
       return luluMemes[value % luluMemes.length];
     }
 
-    function showMeme(meme) {
-      memeImage.src = meme.image;
+    function pickGif(seed = String(Date.now())) {
+      const value = seed.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+      return luluGifs[value % luluGifs.length];
+    }
+
+    function showMeme(meme, seed = "") {
+      const gif = pickGif(`${meme.code}-${seed}-${Math.random()}`);
+      memeImage.src = gif.src;
       memeImage.alt = `${meme.phrase}噜噜表情包`;
       memePhrase.textContent = meme.phrase;
       memeCode.textContent = meme.code;
@@ -1103,7 +1126,7 @@
         const titles = ["人格底色", "群聊表现", "噜学建议"];
         return `<div class="meta-card"><strong>${titles[index] || "补充观察"}</strong><span>${detail}</span></div>`;
       }).join("");
-      showMeme(pickMeme(code));
+      showMeme(pickMeme(code), code);
       shareText.textContent = `我的 LBTI 是 ${code}：${data.name}。今天是人类 MBTI 史上伟大的一天。`;
       result.classList.add("show");
       result.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1140,7 +1163,7 @@
 
     memeBtn.addEventListener("click", () => {
       const meme = luluMemes[Math.floor(Math.random() * luluMemes.length)];
-      showMeme(meme);
+      showMeme(meme, String(Date.now()));
     });
 
     resetBtn.addEventListener("click", () => {
@@ -1157,6 +1180,15 @@
       item.className = `chat-message ${role}`;
       item.textContent = text;
       chatLog.appendChild(item);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function addChatGif(seed) {
+      const gif = pickGif(seed);
+      const wrap = document.createElement("div");
+      wrap.className = "chat-gif";
+      wrap.innerHTML = `<img src="${gif.src}" alt="${gif.title}" loading="lazy" decoding="async">`;
+      chatLog.appendChild(wrap);
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
@@ -1203,6 +1235,7 @@
         const data = await response.json();
         const reply = data.reply || "噜噜卡住了，但它依然觉得这很像鼻孔。";
         addChatMessage("lulu", reply);
+        addChatGif(`${reply}-${Date.now()}`);
         chatHistory.push({ role: "assistant", content: reply });
         chatStatus.textContent = "API：已连接";
         await speakAsLulu(reply);
