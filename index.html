@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>水豚噜噜 LBTI 人格测试</title>
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link rel="apple-touch-icon" href="./favicon.png" />
   <style>
     :root {
       --bg: #fff7ec;
@@ -441,6 +443,47 @@
       display: block;
     }
 
+    .gif-gallery h2 {
+      margin: 0 0 10px;
+      font-size: 26px;
+    }
+
+    .gif-gallery p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gif-card {
+      overflow: hidden;
+      border-radius: 18px;
+      background: #fffaf2;
+      border: 1px solid rgba(155, 85, 41, 0.12);
+      box-shadow: 0 10px 22px rgba(99, 60, 32, 0.1);
+    }
+
+    .gif-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .gif-card span {
+      display: block;
+      padding: 9px 10px 11px;
+      color: var(--brand-dark);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+
     @media (max-width: 720px) {
       .page {
         width: 100%;
@@ -597,6 +640,10 @@
         grid-template-columns: 1fr;
       }
 
+      .gif-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .share {
         font-size: 14px;
         line-height: 1.55;
@@ -627,6 +674,10 @@
 
       label {
         font-size: 14px;
+      }
+
+      .gif-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -744,6 +795,12 @@
       </div>
       <div class="share" id="shareText"></div>
     </section>
+
+    <section class="panel gif-gallery">
+      <h2>噜噜 GIF 表情包墙</h2>
+      <p>从公开文章里抓到的噜噜动图，已经本地化到项目里。想发疯的时候往下翻。</p>
+      <div class="gif-grid" id="gifGrid"></div>
+    </section>
   </main>
 
   <script>
@@ -759,6 +816,7 @@
     const memeCode = document.querySelector("#memeCode");
     const memeCaption = document.querySelector("#memeCaption");
     const memeBtn = document.querySelector("#memeBtn");
+    const gifGrid = document.querySelector("#gifGrid");
     const shareText = document.querySelector("#shareText");
     const toast = document.querySelector("#toast");
     const randomBtn = document.querySelector("#randomBtn");
@@ -844,6 +902,11 @@
       { code: "NSKZ", phrase: "那是口罩", image: "./memes/meme-lhyz.png", caption: "终极止损：不要再争了，那可能是一只戴着隐形口罩的噜噜。" },
       { code: "WBXL", phrase: "我不行了", image: "./memes/meme-wbxl.png", caption: "语言系统宣告下线，只剩下一句人类共同的噜噜遗言。" }
     ];
+
+    const luluGifs = Array.from({ length: 22 }, (_, index) => ({
+      title: `噜噜动图 ${String(index + 1).padStart(2, "0")}`,
+      src: `./gifs/zhihu/lulu-gif-${String(index + 1).padStart(2, "0")}.gif`
+    }));
 
     function getCheckedValue(name) {
       const checked = document.querySelector(`input[name="${name}"]:checked`);
@@ -946,6 +1009,10 @@
       result.classList.remove("show");
       toast.classList.remove("show");
     });
+
+    gifGrid.innerHTML = luluGifs.map((gif) => (
+      `<figure class="gif-card"><img src="${gif.src}" alt="${gif.title}" loading="lazy" decoding="async"><span>${gif.title}</span></figure>`
+    )).join("");
   </script>
 </body>
 </html>
