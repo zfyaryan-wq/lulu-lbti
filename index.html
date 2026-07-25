@@ -1038,7 +1038,7 @@
     const autoSpeak = document.querySelector("#autoSpeak");
     const chatStatus = document.querySelector("#chatStatus");
 
-    const API_BASE = (window.LULU_API_BASE || localStorage.getItem("luluApiBase") || "https://lulu-api.zfyaryan.workers.dev").replace(/\/$/, "");
+    const API_BASE = (window.LULU_API_BASE || localStorage.getItem("luluApiBase") || "").replace(/\/$/, "");
     const chatHistory = [];
     let currentTypeCode = "";
     let currentTypeName = "";
