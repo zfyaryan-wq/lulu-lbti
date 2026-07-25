@@ -352,6 +352,57 @@
       font-weight: 800;
     }
 
+    .meme-board {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      color: #fff8ee;
+      background:
+        radial-gradient(circle at 92% 12%, rgba(255, 255, 255, 0.2), transparent 28%),
+        linear-gradient(135deg, #8f5434, #d7824a);
+      box-shadow: 0 16px 30px rgba(99, 60, 32, 0.18);
+    }
+
+    .meme-kicker {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 800;
+      opacity: 0.82;
+    }
+
+    .meme-phrase {
+      margin: 0;
+      font-size: clamp(30px, 7vw, 56px);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .meme-code {
+      display: inline-flex;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #8f5434;
+      background: rgba(255, 248, 238, 0.88);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .meme-caption {
+      margin: 12px 0 0;
+      color: rgba(255, 248, 238, 0.9);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .meme-button {
+      margin-top: 14px;
+      color: #8f5434;
+      background: rgba(255, 248, 238, 0.92);
+      box-shadow: none;
+    }
+
     .share {
       margin-top: 18px;
       padding: 16px;
@@ -663,6 +714,13 @@
       <p id="typeDesc"></p>
       <div class="chips" id="typeChips"></div>
       <div class="result-meta" id="typeMeta"></div>
+      <div class="meme-board" id="memeBoard">
+        <p class="meme-kicker">今日噜噜表情包</p>
+        <h4 class="meme-phrase" id="memePhrase">无孔可寻</h4>
+        <span class="meme-code" id="memeCode">WKKX</span>
+        <p class="meme-caption" id="memeCaption"></p>
+        <button class="meme-button" type="button" id="memeBtn">再抽一张噜噜表情包</button>
+      </div>
       <div class="share" id="shareText"></div>
     </section>
   </main>
@@ -675,6 +733,10 @@
     const typeDesc = document.querySelector("#typeDesc");
     const typeChips = document.querySelector("#typeChips");
     const typeMeta = document.querySelector("#typeMeta");
+    const memePhrase = document.querySelector("#memePhrase");
+    const memeCode = document.querySelector("#memeCode");
+    const memeCaption = document.querySelector("#memeCaption");
+    const memeBtn = document.querySelector("#memeBtn");
     const shareText = document.querySelector("#shareText");
     const toast = document.querySelector("#toast");
     const randomBtn = document.querySelector("#randomBtn");
@@ -747,6 +809,20 @@
       }
     };
 
+    const luluMemes = [
+      { code: "WKKX", phrase: "无孔可寻", caption: "放大三次，沉默十秒：这次真的没有孔，只有无边无际的噜。" },
+      { code: "WZSB", phrase: "无中生鼻", caption: "本来什么都没有，但群聊说有，于是它逐渐拥有了鼻。" },
+      { code: "CCSK", phrase: "处处是孔", caption: "进入孔学后遗症：看水豚像看星图，每个暗点都有重大嫌疑。" },
+      { code: "SB", phrase: "生鼻", caption: "从无到有，从嘴到鼻，一切都发生在你决定相信的那一刻。" },
+      { code: "YKKL", phrase: "以孔窥噜", caption: "你不是在看鼻孔，你是在通过鼻孔理解整只噜噜的精神宇宙。" },
+      { code: "NSZ", phrase: "那是嘴", caption: "理智派最后的防线：先别急着捏，那可能只是嘴。" },
+      { code: "ZZWB", phrase: "指嘴为鼻", caption: "当群聊进入高潮，嘴已经不再只是嘴，它承担了鼻的历史使命。" },
+      { code: "LHYZ", phrase: "噜何有嘴", caption: "经典反问：如果那是嘴，那么噜噜为什么看起来这么像没嘴？" },
+      { code: "SZYY", phrase: "甚至有牙", caption: "鼻孔还没讨论完，牙又出现了。噜噜学，从不缺少新战场。" },
+      { code: "NSKZ", phrase: "那是口罩", caption: "终极止损：不要再争了，那可能是一只戴着隐形口罩的噜噜。" },
+      { code: "WBXL", phrase: "我不行了", caption: "语言系统宣告下线，只剩下一句人类共同的噜噜遗言。" }
+    ];
+
     function getCheckedValue(name) {
       const checked = document.querySelector(`input[name="${name}"]:checked`);
       return checked ? checked.value : "";
@@ -767,6 +843,17 @@
 
     function getGenericDetails(code) {
       return code.split("").map((letter, index) => axisDetails[index][letter]);
+    }
+
+    function pickMeme(seed) {
+      const value = seed.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+      return luluMemes[value % luluMemes.length];
+    }
+
+    function showMeme(meme) {
+      memePhrase.textContent = meme.phrase;
+      memeCode.textContent = meme.code;
+      memeCaption.textContent = meme.caption;
     }
 
     function buildResult(code) {
@@ -791,6 +878,7 @@
         const titles = ["人格底色", "群聊表现", "噜学建议"];
         return `<div class="meta-card"><strong>${titles[index] || "补充观察"}</strong><span>${detail}</span></div>`;
       }).join("");
+      showMeme(pickMeme(code));
       shareText.textContent = `我的 LBTI 是 ${code}：${data.name}。今天是人类 MBTI 史上伟大的一天。`;
       result.classList.add("show");
       result.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -823,6 +911,11 @@
       const code = dimensions.map((dimension) => dimension[Math.floor(Math.random() * dimension.length)]).join("");
       toast.classList.remove("show");
       showResult(code);
+    });
+
+    memeBtn.addEventListener("click", () => {
+      const meme = luluMemes[Math.floor(Math.random() * luluMemes.length)];
+      showMeme(meme);
     });
 
     resetBtn.addEventListener("click", () => {
