@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>水豚噜噜 LBTI 人格测试</title>
+  <style>
+    :root {
+      --bg: #fff7ec;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #382519;
+      --muted: #7a6555;
+      --brand: #d7824a;
+      --brand-dark: #9b5529;
+      --pink: #ff8fb3;
+      --green: #8fbf8f;
+      --shadow: 0 20px 50px rgba(99, 60, 32, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(255, 143, 179, 0.28), transparent 26%),
+        radial-gradient(circle at 88% 18%, rgba(143, 191, 143, 0.26), transparent 28%),
+        linear-gradient(145deg, #fff0dc 0%, var(--bg) 48%, #f7ead8 100%);
+    }
+
+    .page {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(155, 85, 41, 0.18);
+      border-radius: 32px;
+      padding: 42px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero::after {
+      content: "噜噜";
+      position: absolute;
+      right: -10px;
+      bottom: -34px;
+      color: rgba(215, 130, 74, 0.11);
+      font-size: 132px;
+      font-weight: 900;
+      letter-spacing: -8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: var(--brand-dark);
+      background: rgba(215, 130, 74, 0.14);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 18px 0 12px;
+      font-size: clamp(34px, 7vw, 72px);
+      line-height: 0.96;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      max-width: 670px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .capybara {
+      position: relative;
+      z-index: 1;
+      width: min(300px, 100%);
+      height: 170px;
+      margin: 34px 0 4px;
+    }
+
+    .body {
+      position: absolute;
+      left: 16px;
+      bottom: 8px;
+      width: 252px;
+      height: 118px;
+      border-radius: 64px 72px 54px 54px;
+      background: linear-gradient(160deg, #b9794e, #8f5434);
+      box-shadow: inset -18px -18px 0 rgba(85, 43, 25, 0.12);
+    }
+
+    .ear {
+      position: absolute;
+      top: 34px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #8f5434;
+    }
+
+    .ear.left {
+      left: 60px;
+    }
+
+    .ear.right {
+      left: 196px;
+    }
+
+    .eye {
+      position: absolute;
+      top: 76px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #2e1c14;
+    }
+
+    .eye.left {
+      left: 88px;
+    }
+
+    .eye.right {
+      left: 184px;
+    }
+
+    .nose-hole {
+      position: absolute;
+      top: 102px;
+      width: 10px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2e1c14;
+      opacity: 0.72;
+    }
+
+    .nose-hole.left {
+      left: 132px;
+      transform: rotate(-8deg);
+    }
+
+    .nose-hole.right {
+      left: 154px;
+      transform: rotate(8deg);
+    }
+
+    .whisper {
+      position: absolute;
+      left: 202px;
+      top: 6px;
+      padding: 10px 14px;
+      border-radius: 18px 18px 18px 4px;
+      background: #fff;
+      color: var(--brand-dark);
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(99, 60, 32, 0.12);
+      transform: rotate(5deg);
+    }
+
+    .panel {
+      margin-top: 26px;
+      border-radius: 28px;
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(155, 85, 41, 0.12);
+    }
+
+    .question {
+      padding: 22px 0;
+      border-bottom: 1px dashed rgba(122, 101, 85, 0.28);
+    }
+
+    .question:last-child {
+      border-bottom: 0;
+    }
+
+    .question h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 2px solid rgba(155, 85, 41, 0.14);
+      border-radius: 18px;
+      background: #fffaf2;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    label:hover {
+      transform: translateY(-2px);
+      border-color: rgba(215, 130, 74, 0.55);
+      box-shadow: 0 10px 22px rgba(99, 60, 32, 0.1);
+    }
+
+    label:has(input:checked) {
+      border-color: rgba(215, 130, 74, 0.82);
+      background: #fff0dc;
+      box-shadow: 0 10px 22px rgba(215, 130, 74, 0.16);
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--pink));
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 12px 22px rgba(215, 130, 74, 0.25);
+      transition: 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(215, 130, 74, 0.32);
+    }
+
+    .ghost {
+      color: var(--brand-dark);
+      background: rgba(215, 130, 74, 0.13);
+      box-shadow: none;
+    }
+
+    .result {
+      display: none;
+      margin-top: 26px;
+      border: 2px solid rgba(215, 130, 74, 0.28);
+      border-radius: 30px;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 245, 231, 0.92)),
+        radial-gradient(circle at 90% 0%, rgba(255, 143, 179, 0.22), transparent 36%);
+      box-shadow: var(--shadow);
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .type {
+      margin: 0 0 10px;
+      color: var(--brand-dark);
+      font-size: clamp(42px, 10vw, 88px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+    }
+
+    .result h3 {
+      margin: 0 0 12px;
+      font-size: 26px;
+    }
+
+    .result p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .share {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      color: var(--brand-dark);
+      background: rgba(215, 130, 74, 0.12);
+      font-weight: 800;
+    }
+
+    .toast {
+      display: none;
+      margin-top: 12px;
+      color: var(--brand-dark);
+      font-weight: 700;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: 100%;
+        padding: max(14px, env(safe-area-inset-top)) 14px max(28px, env(safe-area-inset-bottom));
+      }
+
+      .hero,
+      .panel,
+      .result {
+        padding: 20px;
+        border-radius: 24px;
+        box-shadow: 0 14px 34px rgba(99, 60, 32, 0.13);
+      }
+
+      .hero::after {
+        right: -18px;
+        bottom: -20px;
+        font-size: 82px;
+        letter-spacing: -5px;
+      }
+
+      .badge {
+        padding: 7px 11px;
+        font-size: 12px;
+      }
+
+      h1 {
+        margin-top: 14px;
+        font-size: clamp(38px, 13vw, 54px);
+        letter-spacing: -1px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .capybara {
+        width: 240px;
+        height: 134px;
+        margin-top: 22px;
+        transform: scale(0.92);
+        transform-origin: left bottom;
+      }
+
+      .body {
+        width: 220px;
+        height: 100px;
+      }
+
+      .ear.left {
+        left: 56px;
+      }
+
+      .ear.right {
+        left: 172px;
+      }
+
+      .eye.left {
+        left: 78px;
+      }
+
+      .eye.right {
+        left: 160px;
+      }
+
+      .nose-hole {
+        top: 96px;
+      }
+
+      .nose-hole.left {
+        left: 118px;
+      }
+
+      .nose-hole.right {
+        left: 138px;
+      }
+
+      .panel {
+        margin-top: 16px;
+      }
+
+      .question {
+        padding: 18px 0;
+      }
+
+      .question h2 {
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      label {
+        min-height: 60px;
+        padding: 13px 14px;
+        border-radius: 16px;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      input[type="radio"] {
+        width: 20px;
+        height: 20px;
+      }
+
+      .actions {
+        position: sticky;
+        bottom: max(10px, env(safe-area-inset-bottom));
+        z-index: 5;
+        display: grid;
+        grid-template-columns: 1fr;
+        margin: 20px -4px 0;
+        padding: 10px;
+        border: 1px solid rgba(155, 85, 41, 0.12);
+        border-radius: 22px;
+        background: rgba(255, 250, 242, 0.9);
+        box-shadow: 0 12px 26px rgba(99, 60, 32, 0.16);
+        backdrop-filter: blur(14px);
+      }
+
+      button {
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 16px;
+        font-size: 15px;
+      }
+
+      .whisper {
+        left: 156px;
+        top: -4px;
+        padding: 8px 11px;
+        font-size: 12px;
+      }
+
+      .type {
+        font-size: clamp(48px, 20vw, 72px);
+      }
+
+      .result h3 {
+        font-size: 21px;
+        line-height: 1.35;
+      }
+
+      .result p {
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .share {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .page {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .hero,
+      .panel,
+      .result {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .capybara {
+        margin-left: -12px;
+        transform: scale(0.82);
+      }
+
+      label {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <span class="badge">人类 MBTI 史上伟大的一天</span>
+      <h1>水豚噜噜<br />LBTI 人格测试</h1>
+      <p class="subtitle">
+        你是细思鼻孔的开宗立派型，还是看到噜噜就爱鼠了的精神饲养员？
+        8 道题，测出你的噜噜人格。
+      </p>
+
+      <div class="capybara" aria-hidden="true">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="body"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose-hole left"></div>
+        <div class="nose-hole right"></div>
+        <div class="whisper">细思鼻孔</div>
+      </div>
+    </section>
+
+    <form class="panel" id="quiz">
+      <div class="question">
+        <h2>1. 看到一只小噜噜，你第一反应是？</h2>
+        <div class="options">
+          <label><input type="radio" name="q1" value="Y" /> 爱鼠了，立刻认领精神抚养权</label>
+          <label><input type="radio" name="q1" value="X" /> 先仔细观察，确认它到底哪里可爱</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>2. 朋友说“我还有一只噜噜”，你会？</h2>
+        <div class="options">
+          <label><input type="radio" name="q2" value="Y" /> 真有啊？我去，给我看！</label>
+          <label><input type="radio" name="q2" value="X" /> 你养的吗？领养的吗？来源清楚吗？</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>3. 面对“捏他鼻子”这个请求，你会？</h2>
+        <div class="options">
+          <label><input type="radio" name="q3" value="X" /> 替我，立刻精神捏鼻</label>
+          <label><input type="radio" name="q3" value="Z" /> 人家哪儿有鼻子？</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>4. 当大家开始硬找噜鼻时，你的态度是？</h2>
+        <div class="options">
+          <label><input type="radio" name="q4" value="X" /> 仔细看，细思鼻孔</label>
+          <label><input type="radio" name="q4" value="Z" /> 那是鼻孔吗？我不行了</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>5. 你遇到萌物时的语言状态是？</h2>
+        <div class="options">
+          <label><input type="radio" name="q5" value="B" /> 爱鼠了这小噜噜，谁懂</label>
+          <label><input type="radio" name="q5" value="L" /> 好可爱，但我还能维持人类语言</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>6. 朋友发来噜噜照片，你会？</h2>
+        <div class="options">
+          <label><input type="radio" name="q6" value="B" /> 我不行了</label>
+          <label><input type="radio" name="q6" value="L" /> 不错，确实有点可爱</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>7. 出现“细思鼻孔”这种词时，你会？</h2>
+        <div class="options">
+          <label><input type="radio" name="q7" value="K" /> 立刻缩写成 XXBK，并宣布 LBTI 成立</label>
+          <label><input type="radio" name="q7" value="R" /> 笑一下，转发，但不负责建系</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <h2>8. 你会把自己的 MBTI 改成？</h2>
+        <div class="options">
+          <label><input type="radio" name="q8" value="K" /> XXBK / YZLB / LBTI，必须填</label>
+          <label><input type="radio" name="q8" value="R" /> 不改，但会问别人“你的 LBTI 是什么”</label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">测测我的 LBTI</button>
+        <button class="ghost" type="button" id="randomBtn">随机生成小噜噜人格</button>
+        <button class="ghost" type="reset" id="resetBtn">重新测试</button>
+      </div>
+      <div class="toast" id="toast">先把 8 道题都选完，噜噜才会现身。</div>
+    </form>
+
+    <section class="result" id="result" aria-live="polite">
+      <h2 class="type" id="typeCode">XXBK</h2>
+      <h3 id="typeName">细寻鼻孔・崩溃开宗型</h3>
+      <p id="typeDesc"></p>
+      <div class="share" id="shareText"></div>
+    </section>
+  </main>
+
+  <script>
+    const quiz = document.querySelector("#quiz");
+    const result = document.querySelector("#result");
+    const typeCode = document.querySelector("#typeCode");
+    const typeName = document.querySelector("#typeName");
+    const typeDesc = document.querySelector("#typeDesc");
+    const shareText = document.querySelector("#shareText");
+    const toast = document.querySelector("#toast");
+    const randomBtn = document.querySelector("#randomBtn");
+    const resetBtn = document.querySelector("#resetBtn");
+
+    const dimensions = [
+      ["Y", "X"],
+      ["X", "Z"],
+      ["B", "L"],
+      ["K", "R"]
+    ];
+
+    const names = {
+      Y: "养噜",
+      X: "细寻",
+      Z: "止损",
+      B: "崩溃",
+      L: "冷静",
+      K: "开宗",
+      R: "路过"
+    };
+
+    const specialResults = {
+      XXBK: {
+        name: "细寻鼻孔・崩溃开宗型",
+        desc: "你是噜噜学奠基人。别人看到水豚，你看到鼻孔、鼻毛和多么带孔。你不是在看萌物，你是在建立一套新的人格分类宇宙。"
+      },
+      YZLB: {
+        name: "养噜止损・冷静崩溃边缘型",
+        desc: "你嘴上说“哪儿有鼻子”，但心里已经开始替人捏鼻子。你是理性与爱鼠之间反复横跳的经典噜噜人格。"
+      },
+      YXBK: {
+        name: "养噜细思・崩溃开宗型",
+        desc: "你一旦确认“真有啊”，就会迅速进入领养、捏鼻、造梗、卖测试一块钱的全流程创业状态。"
+      },
+      XZLR: {
+        name: "寻噜止损・冷静路过型",
+        desc: "你负责在人群疯掉时问：“等一下，那真的是鼻孔吗？”你是噜噜宇宙里最后的人类理智。"
+      }
+    };
+
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "";
+    }
+
+    function pickDimension(left, right, answers) {
+      const leftCount = answers.filter((answer) => answer === left).length;
+      const rightCount = answers.filter((answer) => answer === right).length;
+      return leftCount >= rightCount ? left : right;
+    }
+
+    function buildResult(code) {
+      if (specialResults[code]) return specialResults[code];
+
+      const displayName = `${names[code[0]]}${names[code[1]]}・${names[code[2]]}${names[code[3]]}型`;
+      const desc = `你的噜噜人格是 ${displayName}。你对小噜噜既有本能的爱，也有独特的观察角度；一旦进入“细思鼻孔”现场，很可能成为朋友群里那个把梗续到第二天的人。`;
+
+      return { name: displayName, desc };
+    }
+
+    function showResult(code) {
+      const data = buildResult(code);
+      typeCode.textContent = code;
+      typeName.textContent = data.name;
+      typeDesc.textContent = data.desc;
+      shareText.textContent = `我的 LBTI 是 ${code}：${data.name}。今天是人类 MBTI 史上伟大的一天。`;
+      result.classList.add("show");
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function calculate() {
+      const answers = Array.from({ length: 8 }, (_, index) => getCheckedValue(`q${index + 1}`));
+      if (answers.some((answer) => !answer)) {
+        toast.classList.add("show");
+        return;
+      }
+
+      toast.classList.remove("show");
+      const code = [
+        pickDimension("Y", "X", answers.slice(0, 2)),
+        pickDimension("X", "Z", answers.slice(2, 4)),
+        pickDimension("B", "L", answers.slice(4, 6)),
+        pickDimension("K", "R", answers.slice(6, 8))
+      ].join("");
+
+      showResult(code);
+    }
+
+    quiz.addEventListener("submit", (event) => {
+      event.preventDefault();
+      calculate();
+    });
+
+    randomBtn.addEventListener("click", () => {
+      const code = dimensions.map((dimension) => dimension[Math.floor(Math.random() * dimension.length)]).join("");
+      toast.classList.remove("show");
+      showResult(code);
+    });
+
+    resetBtn.addEventListener("click", () => {
+      result.classList.remove("show");
+      toast.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
